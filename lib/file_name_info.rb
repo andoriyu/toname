@@ -9,6 +9,10 @@ class FileNameInfo
     @series = params[:series]
     @episode = params[:episode]
   end
+  
+  def is_tv_show?
+    @series ? true : false
+  end
 
   def to_s
     s = ''
