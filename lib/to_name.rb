@@ -7,7 +7,9 @@ class ToName
   CD_FOLDER_REGEX = /\/CD(\d)\//
   #Chars used in filenames as a substitute for spaces
   SPACE_SUB_REGEX = /(\.|_|\-)/
-  VIDEO_TYPE_NAMES = ['DVDRIP', '1080p', '720p','R5', 'DVDSCR', 'BDRip', 'CAM', 'TS', 'PPV', 'Xvid', 'divx', 'DVDSCREENER']
+  VIDEO_TYPE_NAMES = ['DVDRIP', '1080p', '720p','R5', 'DVDSCR', 'BDRip', 'CAM',
+  'TS', 'PPV', 'Xvid', 'divx', 'DVDSCREENER', 'HDTV', 'x264','LOL','PROPER', 'VTV',
+  'DIMENSION', 'PROPER', 'ASAP', '2HD', 'RiVER', 'TLA', 'FoV', 'EVOLVE']
   CONTENT_SOURCE_FOLDER_TEST_REGEX = /#{VIDEO_TYPE_NAMES.join('|')}/i
   CONTENT_SOURCE_REGEX = /(\(|\[|\s)+(#{VIDEO_TYPE_NAMES.join('|')})(\)|\]|\s|$)+/i
   YEAR_REGEX = /(\(|\[|\s)+\d{4}(,|\)|\]|\s|$)+/
@@ -41,13 +43,6 @@ class ToName
     name = raw_name.dup
     #Chop off any info about the movie format or source
     name = $` if name =~ CONTENT_SOURCE_REGEX
-  
-    #Extract year if it's in the filename
-    if name =~ YEAR_REGEX && name.index(YEAR_REGEX) > 0
-      name = $`
-      #Strip any surrounding brackets and convert to int
-      year = $&.gsub(/\(|\)|\[|\]/, '').to_i
-    end
 
     #Strip LIMITED off the end.  Note: This is case sensitive
     name = $` if name =~ /LIMITED|LiMiTED$/
@@ -68,6 +63,14 @@ class ToName
       name = $`
       session = 1
       episode = $1.to_i  
+    end
+    
+    
+    #Extract year if it's in the filename
+    if name =~ YEAR_REGEX && name.index(YEAR_REGEX) > 0
+      name = $`
+      #Strip any surrounding brackets and convert to int
+      year = $&.gsub(/\(|\)|\[|\]/, '').to_i
     end
 
     # Sometimes there can be multiple media files for a single movie, we want to remove the version number if this is the case
